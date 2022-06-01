@@ -116,7 +116,6 @@ grid off;
 axis equal;
 xlim([-1.5 6]);
 ylim([-2 7.5]);
-exportgraphics(f,'Trajectories.pdf','ContentType','vector');
 
 %Plot pure magnetic field map and save
 fontsize=13;
@@ -188,7 +187,6 @@ plot(error_ALL,'k','LineWidth',linewidth);
 legend({'SLAM','ZUPT','ZUPT-UWB','SLAM-UWB'},'Interpreter','Latex','Fontsize',fontsize,'Location','northwest');
 ylabel('Position RMSE (m)','Interpreter','Latex','Fontsize',fontsize);
 xlabel('Timestep','Interpreter','Latex','Fontsize',fontsize);
-exportgraphics(f,'Errors.pdf','ContentType','vector');
 
 fileID=fopen('results.txt','w');
 fprintf(fileID,['IMU+ZUPT RMSE: ',num2str(sqrt(mean(error_ZUPT.^2))),'\n']);
