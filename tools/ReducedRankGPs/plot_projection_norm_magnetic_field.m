@@ -1,6 +1,4 @@
-function plot_projection_norm_magnetic_field(m,P_m,NablaPhi3D,X,Y,Z,fontsize)
-%Copyright (C) 2022 by Frida Viset
-
+function [Norm,Opacity]=plot_projection_norm_magnetic_field(m,P_m,NablaPhi3D,X,Y,Z,fontsize)
 N_points=size(NablaPhi3D,1);
 N_m=size(m,1);
 NablaPhi3DVec=reshape(NablaPhi3D,N_points*3,N_m);
@@ -16,7 +14,8 @@ for i=1:N_points
 end
 Norm=reshape(Norm,size(X));
 Var=reshape(VarVec,size(X));
-surf(X,Y,Z,Norm,'AlphaData',1./Var,'FaceAlpha','flat','EdgeColor','none');
+Opacity=1./sqrt(Var);
+surf(X,Y,Z,Norm,'AlphaData',Opacity,'FaceAlpha','flat','EdgeColor','none');
 view(2);
 xlabel('$x($m$)$','Interpreter','Latex','Fontsize',fontsize);
 ylabel('$y($m$)$','Interpreter','Latex','Fontsize',fontsize);
