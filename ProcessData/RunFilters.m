@@ -1,5 +1,6 @@
-%Loads the algorithm settings and the IMU data
+%% Load the algorithm settings and the IMU data
 close all; clear;
+disp('Load algorithm settings and IMU data')
 
 load('2022_01_20_1.mat');
 
@@ -66,8 +67,6 @@ y_m_norm=sum(y_m.^2);
 N_m=850;
 
 %Magnetic field params
-
-%New params
 sigma_SE=0.84;
 l_SE=0.81;
 sigma_lin=0.72;
@@ -84,12 +83,14 @@ p_0=zeros(3,1);
 Ts=1./200;
 N=size(u_full,2);
 
+%% Run the algorithms
+disp('Running algorithms')
 [x_h, q_hat, m, P_m]=ZUPTEKFMagSLAM(u_full,zupt_temp,sigma_y,Lambda,Indices,sigma_lin,N_m,xl,xu,yl,yu,zl,zu);
 
-[x_h_all, q_hat, m_all, P_m_all]=ZUPTEKFMagSLAMUWB(u_full,zupt_temp,sigma_y,Lambda,Indices,sigma_lin,N_m,xl,xu,yl,yu,zl,zu,UWB,R_UWB,beacons);
+[x_h_all, q_hat_all, m_all, P_m_all]=ZUPTEKFMagSLAMUWB(u_full,zupt_temp,sigma_y,Lambda,Indices,sigma_lin,N_m,xl,xu,yl,yu,zl,zu,UWB,R_UWB,beacons);
 
-%Plot results
-
+%% Plot results
+disp('Making plots')
 res=0.05; z=0;
 [X,Y,Z,pointsVec,PhiVec,NablaPhi3D]=prepare_magnetic_field_plots(xl,xu,yl,yu,zl,zu,N_m,Indices,res,z);
 fontsize=13;
@@ -168,7 +169,7 @@ imagename='MagneticFieldMap';
 %Normalise Y data
 indices_squeezed=ceil((MagNormSqueezed).*254+1);
 ColorPictureSqueezed=reshape(A(indices_squeezed,:),size(MagNormSqueezed,1),size(MagNormSqueezed,2),3);
-imwrite(ColorPictureSqueezed,[imagename,'.png'],'Alpha',VarianceSqueezed);
+% imwrite(ColorPictureSqueezed,[imagename,'.png'],'Alpha',VarianceSqueezed);
 
 error_SLAM=Check_error_for_aligned_GT(x_h,p_opti_c);
 error_ZUPT=Check_error_for_aligned_GT(x_h_ZUPT,p_opti_c);
@@ -188,9 +189,9 @@ legend({'SLAM','ZUPT','ZUPT-UWB','SLAM-UWB'},'Interpreter','Latex','Fontsize',fo
 ylabel('Position RMSE (m)','Interpreter','Latex','Fontsize',fontsize);
 xlabel('Timestep','Interpreter','Latex','Fontsize',fontsize);
 
-fileID=fopen('results.txt','w');
-fprintf(fileID,['IMU+ZUPT RMSE: ',num2str(sqrt(mean(error_ZUPT.^2))),'\n']);
-fprintf(fileID,['IMU+ZUPT+Magnetic field RMSE: ',num2str(sqrt(mean(error_SLAM.^2))),'\n']);
-fprintf(fileID,['IMU+ZUPT+UWB RMSE: ',num2str(sqrt(mean(error_UWB.^2))),'\n']);
-fprintf(fileID,['IMU+ZUPT+Magnetic field+UWB RMSE: ',num2str(sqrt(mean(error_ALL.^2))),'\n']);
-fclose(fileID);
+% fileID=fopen('results.txt','w');
+% fprintf(fileID,['IMU+ZUPT RMSE: ',num2str(sqrt(mean(error_ZUPT.^2))),'\n']);
+% fprintf(fileID,['IMU+ZUPT+Magnetic field RMSE: ',num2str(sqrt(mean(error_SLAM.^2))),'\n']);
+% fprintf(fileID,['IMU+ZUPT+UWB RMSE: ',num2str(sqrt(mean(error_UWB.^2))),'\n']);
+% fprintf(fileID,['IMU+ZUPT+Magnetic field+UWB RMSE: ',num2str(sqrt(mean(error_ALL.^2))),'\n']);
+% fclose(fileID);
