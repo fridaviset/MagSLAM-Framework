@@ -1,4 +1,4 @@
-# A framework for indoor localization \\ using the magnetic field
+# A framework for indoor localization using the magnetic field
 
 Manon Kok, Frida Viset and Mostafa Osman
 
