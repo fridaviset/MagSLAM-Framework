@@ -10,7 +10,7 @@ A=zeros(4);
 for t=1:calib_time
     g_w=[0; 0; 0; norm(u(1:3,t))];
     g_b=[0; u(1:3,t)];
-    A=A+q_L(g_b)*q_R(g_w);
+    A=A-q_L(g_b)*q_R(g_w);
 end
 [V,~] = eig(A);
 quat=V(:,1);
